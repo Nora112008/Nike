@@ -1,0 +1,132 @@
+:root{
+    --main-color: #fb3738;
+    --first-color:  #FB3738;
+    --second-color:  #0F7AD7;
+    --third-color: #ED9721;
+}
+
+*{
+    font-family: "Nunito", sans-serif;
+}
+.mainButton{
+    background-color: transparent;
+    color: var(--main-color);
+    transition-duration: 0.5s;
+    border: 1px solid var(--main-color);
+}
+.mainButton:hover{
+    background-color: var(--main-color);
+    color: #fff;
+}
+.mainColor{
+    color: var(--main-color);
+}
+
+.mainBorder{
+    border: 1px solid var(--main-color);
+    border-radius: 5px;
+}
+
+section{
+    background: #ADA996;  
+background: -webkit-linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996);  
+background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996); 
+}
+
+.title{
+    position: relative;
+}
+
+.title h2{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, .2);
+}
+
+.title img{
+    width: 20%;
+}
+.loadingPage{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    opacity: 1;
+    transition-duration: 1s;
+}
+.loadingPage.hide{
+    opacity: 0;
+}
+
+.size .value ul li {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+}
+.size .value ul li.active{
+    background-color: var(--main-color);
+    color: #fff;
+}
+
+.popup{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, .5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+.popup.active{
+    display: flex;
+}
+
+.popup[data-popup-name="shop"].active,
+.popup[data-popup-name="favorite"].active{
+    display: block;
+}
+
+
+.popup .box{
+    width: 30%;
+    background: #ADA996;  
+background: -webkit-linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996);  
+background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996);
+position: relative;
+transform: translateY(-100%);
+opacity: 0;
+transition-duration: 0.5s;
+}
+.popup[data-popup-name="shop"] .box,
+.popup[data-popup-name="favorite"] .box{
+    margin: 50px auto;
+    width: 60%;
+}
+.popup.show .box{
+    transform: translateY(0%);
+    opacity: 1;
+}
+
+.popup .box .head i{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 22px;
+    cursor: pointer;
+}
