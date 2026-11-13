@@ -18,6 +18,24 @@
     background-color: var(--main-color);
     color: #fff;
 }
+
+.mainButton.remove{
+    color: var(--bs-warning);
+    border: 1px solid var(--bs-warning);
+}
+.mainButton.remove:hover{
+    background-color: var(--bs-warning);
+    color: #fff;
+}
+.mainButton.buy{
+    color: var(--bs-success);
+    border: 1px solid var(--bs-success);
+}
+.mainButton.buy:hover{
+    background-color: var(--bs-success);
+    color: #fff;
+}
+
 .mainColor{
     color: var(--main-color);
 }
@@ -68,6 +86,10 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996);
     opacity: 0;
 }
 
+li{
+    cursor: pointer;
+}
+
 .size .value ul li {
     width: 25px;
     height: 25px;
@@ -80,6 +102,16 @@ background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996);
     background-color: var(--main-color);
     color: #fff;
 }
+.color .value ul li {
+    width: 15px;
+    height: 15px;
+}
+
+.color .value ul li.active {
+    border: none;
+    box-shadow: #00000040 0 54px 55px, #0000001f 0 -12px 30px, #0000001f 0 4px 6px, #0000002b 0 12px 13px, #00000017 0 -3px 5px;
+}
+
 
 .popup{
     position: fixed;
@@ -117,6 +149,9 @@ transition-duration: 0.5s;
 .popup[data-popup-name="favorite"] .box{
     margin: 50px auto;
     width: 60%;
+}
+.popup[data-popup-name="product"] .box{
+    width: 50%;
 }
 .popup.show .box{
     transform: translateY(0%);

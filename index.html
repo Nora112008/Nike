@@ -38,7 +38,7 @@
     </ul>
     <ul class="icons list-unstyled d-flex mb-0">
         <li><i class="fa-solid fa-heart" onclick="openPopup('favorite')"></i></li>
-        <li><i class="fa-solid fa-cart-shopping" onclick="openPopup('shop')"></i></li>
+        <li><i class="fa-solid fa-cart-shopping" onclick="showCart()"></i></li>
         <li><i class="fa-solid fa-user" onclick="openPopup('login')"></i></li>
     </ul>
     </div>
@@ -150,7 +150,7 @@
             </div>
             <div class="content">
             <div class="row row-gap-3">
-               
+            
             </div>
             </div>
         </div>
@@ -171,7 +171,7 @@
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" name="userName" placeholder="UserName *" required>
                     </div>
-                     <div class="input-group mb-3">
+                    <div class="input-group mb-3">
                         <input type="password" class="form-control" name="password" placeholder="Password *" required>
                     </div>
                     <button class="btn mainButton w-100">Login</button>
@@ -180,14 +180,24 @@
         </div>
     </div>
 
-     <div class="popup" data-popup-name="shop" onclick="closePopup()">
+    <div class="popup" data-popup-name="product" onclick="closePopup()">
+        <div class="box rounded-3 px-3 py-4">
+        
+        </div>
+    </div>
+
+    <div class="popup overflow-y-auto" data-popup-name="shop" onclick="closePopup()">
         <div class="box rounded-3 p-3">
             <div class="head mb-5">
                 <i class="fa-regular fa-circle-xmark mainColor" onclick="closePopup()"></i>
                 <h4 class="mainColor text-center fs-3 fw-bold">Shop</h4>
             </div>
-            <div class="body">
+            <div class="body px-3">
+                <div class="row">
+                    
+                </div>
             </div>
+            <button class="mainButton buy w-100 py-2 rounded-3">Buy Now</button>
         </div>
     </div>
     <div class="popup" data-popup-name="favorite" onclick="closePopup()">

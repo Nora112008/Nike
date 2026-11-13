@@ -10,84 +10,32 @@ sections = document.querySelectorAll("section, header"),
 loadingPageEle = document.querySelector(".loadingPage"),
 latestContainer = document.querySelector("#Latest .content"),
 featuredContainer = document.querySelector("#Featured .content .row"),
-popupBoxes = document.querySelectorAll(".popup .box");
+popupBoxes = document.querySelectorAll(".popup .box"),
+cartProducts = [];
+
+
+if(localStorage.getItem('cartProducts') == null){
+    updateLocalStorage();
+}else {
+    cartProducts = JSON.parse(localStorage.getItem('cartProducts'));
+}
+
 
 
 checkScrolledNav();
 
+nextCarousel.addEventListener("click", next);
 
-nextCarousel.addEventListener("click", function(){
-    let currentSlide = scCarousel.querySelector(".sc-carousel-item.active"),
-        newSlide = currentSlide.nextElementSibling ?? scCarousel.querySelector(".sc-carousel-item:first-child"),
-        currentName = newSlide.dataset.colorName;
-
-        currentSlide.classList.remove("active");
-        newSlide.classList.add("active");
-
-        changeMainColor(currentName);
-        updateImg(currentName, logoEle, 'logo');
-
-                correctImgs.forEach(function(correctImgs){
-                    updateImg(currentName, correctImgs, 'correct');
-                });
-
-
-        updateLogo(currentName);
-});
-prevCarousel.addEventListener("click", function(){
-    let currentSlide = scCarousel.querySelector(".sc-carousel-item.active"),
-     newSlide = currentSlide.previousElementSibling ?? scCarousel.querySelector(".sc-carousel-item:last-child"),
-     currentName = newSlide.dataset.colorName;
-
-     currentSlide.classList.remove("active");
-        newSlide.classList.add("active");
-        changeMainColor(currentName);
-        updateImg(currentName, logoEle, 'logo');
-
-                correctImgs.forEach(function(correctImgs){
-                    updateImg(currentName, correctImgs, 'correct');
-                });
-
-
-        updateLogo(currentName);
-
-});
+prevCarousel.addEventListener("click", prev);
 
 
 document.addEventListener("keydown", function(e){
     if (e.key === "ArrowRight"){
-         let currentSlide = scCarousel.querySelector(".sc-carousel-item.active"),
-        newSlide = currentSlide.nextElementSibling ?? scCarousel.querySelector(".sc-carousel-item:first-child"),
-        currentName = newSlide.dataset.colorName;
-
-        currentSlide.classList.remove("active");
-        newSlide.classList.add("active");
-
-        changeMainColor(currentName);
-        updateImg(currentName, logoEle, 'logo');
-
-                correctImgs.forEach(function(correctImgs){
-                    updateImg(currentName, correctImgs, 'correct');
-                });
-
+        next();
 
         updateLogo(currentName);
     }else if (e.key === "ArrowLeft"){
-        let currentSlide = scCarousel.querySelector(".sc-carousel-item.active"),
-     newSlide = currentSlide.previousElementSibling ?? scCarousel.querySelector(".sc-carousel-item:last-child"),
-     currentName = newSlide.dataset.colorName;
-
-     currentSlide.classList.remove("active");
-        newSlide.classList.add("active");
-        changeMainColor(currentName);
-        updateImg(currentName, logoEle, 'logo');
-
-                correctImgs.forEach(function(correctImgs){
-                    updateImg(currentName, correctImgs, 'correct');
-                });
-
-
-        updateLogo(currentName);
+        prev();
     }
 })
 
@@ -146,8 +94,16 @@ window.addEventListener("DOMContentLoaded", function(){
 });
 
 latest.forEach(function(product){
+
+    let isProductIntoCart = checkProductIntoCart(product.id);
+
     latestContainer.innerHTML += `
-    <div class="product mainBorder bg-body rounded-3 p-3 mb-3">
+    <div
+    class="product mainBorder bg-body rounded-3 p-3 mb-3"
+    data-product-id="${product.id}"
+    data-selected-size="${isProductIntoCart?.size ?? product.sizes[0]}"
+    data-selected-color="${isProductIntoCart?.color ?? product.colors[0]}"
+    >
     <div class="row">
         <div class="col-lg-6 part1">
             <div class="item">
@@ -187,11 +143,16 @@ latest.forEach(function(product){
                     </div>
                     <div class="value">
                     <ul class="list-unstyled d-flex column-gap-2">
-                        ${prepareSizesList(product.sizes)}
+                        ${prepareSizesList(product.sizes, isProductIntoCart)}
                     </ul>
                     </div>
                 </div>
-                <button class="btn mainButton rounded-2 py-2 px-3">Add To Cart</button>
+                ${
+                    (isProductIntoCart == null)?
+                    `<button class="btn mainButton rounded-2 py-2 px-3" onclick="addToCart(${product.id}, this)">Add To Cart</button>`
+                    :
+                    `<button class="btn mainButton remove rounded-2 py-2 px-3" onclick="removeFromCart(${product.id}, this)">Remove From Cart</button>`
+                }
             </div>
         </div>
     </div>
@@ -204,12 +165,12 @@ features.forEach(function(product){
      <div class="col-lg-3">
         <div class="item">
     <div class="product text-center bg-body rounded-3 px-3 py-1">
-        <p class="discount ${(product.discount == 0) ? 'd-none' : '' } ">-${product.discount * 100}</p>
+        <p class="discount ${(product.discount == 0) ? 'd-none' : '' } ">-${product.discount * 100}%</p>
         <div class="head">
             <div class="selectedImg">
                 <img src="./images/products/${product.images[0]}" class="img-fluid" alt="">
             </div>
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <i class="fa-solid fa-magnifying-glass" onclick="showProduct(${product.id});"></i>
             <ul class="list-unstyled d-flex  justify-content-center column-gap-2">
                 ${prepareLiList(product.images)}
             </ul>
