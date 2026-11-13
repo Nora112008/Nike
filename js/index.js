@@ -11,13 +11,20 @@ loadingPageEle = document.querySelector(".loadingPage"),
 latestContainer = document.querySelector("#Latest .content"),
 featuredContainer = document.querySelector("#Featured .content .row"),
 popupBoxes = document.querySelectorAll(".popup .box"),
-cartProducts = [];
+cartProducts = [],
+favoriteProducts = [];
 
 
 if(localStorage.getItem('cartProducts') == null){
     updateLocalStorage();
 }else {
     cartProducts = JSON.parse(localStorage.getItem('cartProducts'));
+}
+
+if(localStorage.getItem('favoriteProducts') == null){
+    updateFavoriteLocalStorage();
+}else {
+    favoriteProducts = JSON.parse(localStorage.getItem('favoriteProducts'));
 }
 
 
@@ -32,8 +39,6 @@ prevCarousel.addEventListener("click", prev);
 document.addEventListener("keydown", function(e){
     if (e.key === "ArrowRight"){
         next();
-
-        updateLogo(currentName);
     }else if (e.key === "ArrowLeft"){
         prev();
     }
@@ -164,7 +169,7 @@ features.forEach(function(product){
     featuredContainer.innerHTML += `
      <div class="col-lg-3">
         <div class="item">
-    <div class="product text-center bg-body rounded-3 px-3 py-1">
+    <div class="product text-center bg-body rounded-3 px-3 py-1" ondblclick="addToFavorite(${product.id})">
         <p class="discount ${(product.discount == 0) ? 'd-none' : '' } ">-${product.discount * 100}%</p>
         <div class="head">
             <div class="selectedImg">

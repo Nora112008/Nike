@@ -165,3 +165,8 @@ transition-duration: 0.5s;
     font-size: 22px;
     cursor: pointer;
 }
+
+#Featured .product{
+    user-select: none;
+    cursor: pointer;
+}

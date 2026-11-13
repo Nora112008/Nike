@@ -287,6 +287,8 @@ function updateColor(color, that){
 function updateLocalStorage(){
     localStorage.setItem('cartProducts', JSON.stringify(cartProducts));
 }
+
+
 function checkProductIntoCart(productId){
     let result = cartProducts.filter((product) => product.id == productId);
     return result.length == 1? result[0] : null ;
@@ -294,13 +296,16 @@ function checkProductIntoCart(productId){
 
 function showCart(){
 
-    let contentEle = document.querySelector(`.popup[data-popup-name="shop"] .row`);
+    let contentEle = document.querySelector(`.popup[data-popup-name="shop"] .row`),
+    buyButton = document.querySelector(`.popup[data-popup-name="shop"] .buy`);
 
     if(cartProducts.length == 0){
         contentEle.innerHTML = `<p class="alert alert-warning text-center">There are no products</p>`;
+        buyButton.classList.add('d-none');
     }else{
         contentEle.innerHTML = "";
-    
+        buyButton.classList.remove('d-none');
+
         cartProducts.forEach(function(cartProduct){
             let product = getProduct(cartProduct.id);
             contentEle.innerHTML += `
@@ -357,10 +362,88 @@ function removeFromShop(productId){
     removeFromCart(productId, buttonOfLatestProduct);
 
     if(cartProducts.length == 0){
-    let contentEle = document.querySelector(`.popup[data-popup-name="shop"] .row`);
+    let contentEle = document.querySelector(`.popup[data-popup-name="shop"] .row`),
+    buyButton = document.querySelector(`.popup[data-popup-name="shop"] .buy`);
     
     contentEle.innerHTML = `<p class="alert alert-warning text-center">There are no products</p>`;
+    buyButton.classList.add('d-none')
 }
+}
+
+function updateFavoriteLocalStorage(){
+    localStorage.setItem('favoriteProducts', JSON.stringify(favoriteProducts));
+}
+
+function checkProductIntoFavorite(productId){
+    return favoriteProducts.includes(productId);
+}
+let alertTimeout;
+
+function showCustomAlert(message) {
+    let alertBox = document.getElementById("customAlert"),
+        alertMsg = document.getElementById("alertMessage");
+
+    alertMsg.textContent = message;
+    alertBox.classList.add("show");
+
+    clearTimeout(alertTimeout);
+
+    alertTimeout = setTimeout(function() {
+        alertBox.classList.remove("show");
+    }, 3000);
+}
+
+function addToFavorite(productId){
+    if(!checkProductIntoFavorite(productId)){
+        favoriteProducts.push(productId);
+        updateFavoriteLocalStorage();
+        showCustomAlert("Added to favorites successfully!");
+    } else {
+        showCustomAlert("Already in your favorites!");
+    }
+}
+
+function showFavorites(){
+    let contentEle = document.querySelector(`.popup[data-popup-name="favorite"] .row`);
+
+    if(favoriteProducts.length == 0){
+        contentEle.innerHTML = `<p class="alert alert-warning text-center">There are no favorite products</p>`;
+    } else {
+        contentEle.innerHTML = "";
+
+        favoriteProducts.forEach(function(favId){
+            let product = getProduct(favId);
+            contentEle.innerHTML += `
+            <div class="col-lg-4 py-3">
+                <div class="item">
+                    <div class="product bg-body p-3 rounded-3 text-center" data-product-id="${product.id}">
+                        <img src="./images/products/${product.images[0]}" alt="" class="img-fluid">
+                        <h5>${product.name.slice(0, 12)}...</h5>
+                        <div class="my-2">
+                            ${preparePrice(product.price, product.discount)}
+                        </div>
+                        <button class="btn btn-danger w-100 mt-2" onclick="removeFromFavorite(${product.id})">Remove</button>
+                    </div>
+                </div>
+            </div>
+            `;
+        });
+    }
+
+    openPopup('favorite');
+}
+
+function removeFromFavorite(productId){
+    favoriteProducts = favoriteProducts.filter(id => id != productId);
+    updateFavoriteLocalStorage();
+
+    let productEle = document.querySelector(`.popup[data-popup-name="favorite"] .row .product[data-product-id="${productId}"]`);
+    if(productEle) productEle.parentElement.parentElement.remove();
+
+    if(favoriteProducts.length == 0){
+        let contentEle = document.querySelector(`.popup[data-popup-name="favorite"] .row`);
+        contentEle.innerHTML = `<p class="alert alert-warning text-center">There are no favorite products</p>`;
+    }
 }
 
 

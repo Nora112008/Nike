@@ -37,7 +37,7 @@
         </li>
     </ul>
     <ul class="icons list-unstyled d-flex mb-0">
-        <li><i class="fa-solid fa-heart" onclick="openPopup('favorite')"></i></li>
+        <li><i class="fa-solid fa-heart" onclick="showFavorites()"></i></li>
         <li><i class="fa-solid fa-cart-shopping" onclick="showCart()"></i></li>
         <li><i class="fa-solid fa-user" onclick="openPopup('login')"></i></li>
     </ul>
@@ -197,18 +197,26 @@
                     
                 </div>
             </div>
-            <button class="mainButton buy w-100 py-2 rounded-3">Buy Now</button>
+            <button class="mainButton buy w-100 py-2 rounded-3 d-none">Buy Now</button>
         </div>
     </div>
-    <div class="popup" data-popup-name="favorite" onclick="closePopup()">
+    <div class="popup overflow-y-auto" data-popup-name="favorite" onclick="closePopup()">
         <div class="box rounded-3 p-3">
             <div class="head mb-5">
                 <i class="fa-regular fa-circle-xmark mainColor" onclick="closePopup()"></i>
                 <h4 class="mainColor text-start fs-3 fw-bold">Favorites :</h4>
             </div>
-            <div class="body">
+            <div class="body px-3">
+                <div class="row">
+
+                </div>
             </div>
         </div>
+    </div>
+
+    <div id="customAlert" class="custom-alert shadow">
+        <i class="fa-solid fa-heart me-2"></i>
+        <span id="alertMessage"></span>
     </div>
 
 
