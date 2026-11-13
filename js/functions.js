@@ -31,6 +31,7 @@ function next(){
 
 
         updateWebLogo(currentName);
+        localStorage.setItem('selectedColor', currentName);
 }
 function prev(){
     let currentSlide = scCarousel.querySelector(".sc-carousel-item.active"),
@@ -48,6 +49,7 @@ function prev(){
 
 
         updateWebLogo(currentName);
+        localStorage.setItem('selectedColor', currentName);
 
 }
 function updateImg(imgName, imgEle, commonName) {
@@ -309,7 +311,7 @@ function showCart(){
         cartProducts.forEach(function(cartProduct){
             let product = getProduct(cartProduct.id);
             contentEle.innerHTML += `
-            <div class="col-lg-4 py-3">
+            <div class="col-sm-6 col-md-4 py-3">
                 <div class="item">
                     <div class="product bg-body p-3 rounded-3" data-product-id="${product.id}">
                         <img src="./images/products/${product.images[0]}" alt="" class="img-fluid">
@@ -393,13 +395,33 @@ function showCustomAlert(message) {
     }, 3000);
 }
 
-function addToFavorite(productId){
+function toggleFavorite(productId, productEle){
+    let heartIcon = productEle.querySelector('.heart-pop'),
+     hintEle = productEle.querySelector('.fav-hint');
+
     if(!checkProductIntoFavorite(productId)){
+        if(hintEle) hintEle.textContent = "Double click to remove";
         favoriteProducts.push(productId);
         updateFavoriteLocalStorage();
+        
+        productEle.classList.remove('bg-body');
+        productEle.classList.add('favorites');
+
+        heartIcon.classList.remove('animate');
+        void heartIcon.offsetWidth; 
+        heartIcon.classList.add('animate');
+
         showCustomAlert("Added to favorites successfully!");
     } else {
-        showCustomAlert("Already in your favorites!");
+        if(hintEle) hintEle.textContent = "Double click to favorite";
+        favoriteProducts = favoriteProducts.filter(id => id != productId);
+        updateFavoriteLocalStorage();
+
+        productEle.classList.remove('favorites');
+        productEle.classList.add('bg-body');
+        heartIcon.classList.remove('animate');
+
+        showCustomAlert("Removed from favorites!");
     }
 }
 
@@ -414,14 +436,39 @@ function showFavorites(){
         favoriteProducts.forEach(function(favId){
             let product = getProduct(favId);
             contentEle.innerHTML += `
-            <div class="col-lg-4 py-3">
+            <div class="col-sm-6 col-md-4 py-3">
                 <div class="item">
                     <div class="product bg-body p-3 rounded-3 text-center" data-product-id="${product.id}">
                         <img src="./images/products/${product.images[0]}" alt="" class="img-fluid">
                         <h5>${product.name.slice(0, 12)}...</h5>
-                        <div class="my-2">
-                            ${preparePrice(product.price, product.discount)}
+                        <div class="price d-flex">
+                            <div class="label me-3">
+                                <h6 class="fw-bolder">Price :</h6>
+                            </div>
+                            <div class="value">
+                                ${preparePrice(product.price, product.discount)}
+                            </div>
                         </div>
+                        <div class="size d-flex">
+                                <div class="label me-3">
+                                    <h6 class="fw-bolder">Size :</h6>
+                                </div>
+                                <div class="value">
+                                    <ul class="list-unstyled d-flex column-gap-2">
+                                        ${prepareSizesList([favId.size])}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="color d-flex">
+                                <div class="label me-3">
+                                    <h6 class="fw-bolder">Color :</h6>
+                                </div>
+                                <div class="value">
+                                    <ul class="list-unstyled d-flex column-gap-2">
+                                        ${prepareColorList([favId.color])}
+                                    </ul>
+                                </div>
+                            </div>
                         <button class="btn btn-danger w-100 mt-2" onclick="removeFromFavorite(${product.id})">Remove</button>
                     </div>
                 </div>
@@ -440,11 +487,67 @@ function removeFromFavorite(productId){
     let productEle = document.querySelector(`.popup[data-popup-name="favorite"] .row .product[data-product-id="${productId}"]`);
     if(productEle) productEle.parentElement.parentElement.remove();
 
+    let featuredCard = document.querySelector(`#Featured .product[data-product-id="${productId}"]`);
+    if(featuredCard){
+        let hintEle = featuredCard.querySelector('.fav-hint');
+        if(hintEle) hintEle.textContent = "Double click to favorite";
+        featuredCard.classList.remove('favorites');
+        featuredCard.classList.add('bg-body');
+    }
+
     if(favoriteProducts.length == 0){
         let contentEle = document.querySelector(`.popup[data-popup-name="favorite"] .row`);
         contentEle.innerHTML = `<p class="alert alert-warning text-center">There are no favorite products</p>`;
     }
 }
 
+function searchProduct(e) {
+    e.preventDefault();
 
+    let searchValue = document.getElementById("searchInput").value.trim().toLowerCase();
+    
+    if (searchValue === "") return;
 
+    document.querySelectorAll("#Featured .product.search-highlight").forEach(card => {
+        card.classList.remove("search-highlight");
+        if (!card.classList.contains("favorites")) {
+            card.classList.add("bg-body");
+        }
+    });
+
+    let featuredTitles = document.querySelectorAll("#Featured .product h5");
+    let matchedCards = [];
+
+    featuredTitles.forEach(title => {
+        if (title.textContent.toLowerCase().includes(searchValue)) {
+            matchedCards.push(title.closest(".product"));
+        }
+    });
+
+    if (matchedCards.length > 0) {
+        let firstCard = matchedCards[0];
+        let targetPosition = firstCard.offsetTop - navEle.clientHeight - 20;
+
+        window.scrollTo({
+            top: targetPosition,
+            behavior: "smooth"
+        });
+
+        matchedCards.forEach(card => {
+            card.classList.remove("bg-body");
+            card.classList.add("search-highlight");
+        });
+
+        setTimeout(() => {
+            matchedCards.forEach(card => {
+                card.classList.remove("search-highlight");
+                if (!card.classList.contains("favorites")) {
+                    card.classList.add("bg-body");
+                }
+            });
+        }, 2000);
+
+    } else {
+        showCustomAlert("Product not found!");
+    }
+}

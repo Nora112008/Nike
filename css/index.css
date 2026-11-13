@@ -289,6 +289,56 @@ nav.navbar .icons li i:hover{
 #Featured .product .head ul li.active{
     background-color: var(--main-color);
 }
+
+
+
+#Featured .product .heart-pop {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-size: 110px;
+    color: var(--main-color);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+}
+
+#Featured .product .heart-pop.animate {
+    animation: heartPopAnim 0.8s ease-out forwards;
+}
+
+#Featured .item .product.favorites {
+    background-color: #ffe5e5 ; 
+    border: 1px solid var(--main-color);
+    transition: background-color 0.4s ease;
+}
+#Featured .item .product.search-highlight {
+    background-color: #e6f7ed;
+    border: 1px solid #28a745;
+    transition: background-color 0.4s ease;
+}
+
+#Featured .product .fav-hint {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: rgba(251, 55, 56, 0.75);
+    color: #fff;
+    font-size: 13px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: all 0.5s ease;
+    pointer-events: none;
+    z-index: 4;
+}
+
+#Featured .product:hover .fav-hint {
+    opacity: 1;
+    transform: translateX(0);
+}
 .custom-alert {
     position: fixed;
     bottom: 25px;

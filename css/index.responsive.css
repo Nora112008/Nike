@@ -71,6 +71,15 @@
 #SC-Carousel .sc-carousel-inner .sc-carousel-item.active .part2 img:nth-of-type(2){
     transform: translate(-50%, -50%) rotate(-35deg) scale(1);
 }
+.popup .box {
+    width: 280px;
+}
+.popup[data-popup-name="shop"] .box{
+    width: 300px;
+}
+.popup[data-popup-name="favorite"] .box {
+    width: 300px;
+}
 
 }
 @media (min-width: 371px) and (max-width: 1300px) {
@@ -92,6 +101,12 @@
 }
 #SC-Carousel .sc-carousel-inner .sc-carousel-item.active .part2 img:nth-of-type(1){
     transform: translate(42px,-10px);
+}
+.popup[data-popup-name="shop"] .box{
+    width: 85%;
+}
+.popup[data-popup-name="favorite"] .box {
+    width: 85%;
 }
 }
 @media (min-width: 577px) and (max-width: 1300px) {

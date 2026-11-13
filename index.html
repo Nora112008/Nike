@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./css/all.min.css">
     <link rel="stylesheet" href="./css/fonts.css">
     <link rel="stylesheet" href="./css/bootstrap.css">
+    <link rel="stylesheet" href="./css/keyframes.css">
     <link rel="stylesheet" href="./css/global.css">
     <link rel="stylesheet" href="./css/index.css">
     <link rel="stylesheet" href="./css/index.responsive.css">
@@ -24,7 +25,7 @@
       <span></span>
       <span></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse px-3" id="navbarSupportedContent">
       <ul class="navbar-nav mx-auto mb-2 column-gap-3 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#Home">Home</a>
@@ -36,11 +37,15 @@
           <a class="nav-link" href="#Featured">Featured</a>
         </li>
     </ul>
-    <ul class="icons list-unstyled d-flex mb-0">
+    <ul class="icons list-unstyled d-flex mx-2 mb-0">
         <li><i class="fa-solid fa-heart" onclick="showFavorites()"></i></li>
         <li><i class="fa-solid fa-cart-shopping" onclick="showCart()"></i></li>
         <li><i class="fa-solid fa-user" onclick="openPopup('login')"></i></li>
     </ul>
+    <form class="d-flex me-3 my-3" onsubmit="searchProduct(event)">
+        <input class="form-control form-control-sm me-2" type="search" id="searchInput" placeholder="Search product..." aria-label="Search">
+        <button class="btn mainButton btn-sm" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </form>
     </div>
 </div>
 </nav>

@@ -27,6 +27,23 @@ if(localStorage.getItem('favoriteProducts') == null){
     favoriteProducts = JSON.parse(localStorage.getItem('favoriteProducts'));
 }
 
+let savedColor = localStorage.getItem('selectedColor');
+if (savedColor) {
+    changeMainColor(savedColor);
+    updateImg(savedColor, logoEle, 'logo');
+    correctImgs.forEach(function(correctImg) {
+        updateImg(savedColor, correctImg, 'correct');
+    });
+    updateWebLogo(savedColor);
+
+    let activeSlide = scCarousel.querySelector(".sc-carousel-item.active"),
+        savedSlide = scCarousel.querySelector(`.sc-carousel-item[data-color-name="${savedColor}"]`);
+    if (savedSlide && activeSlide !== savedSlide) {
+        activeSlide.classList.remove("active");
+        savedSlide.classList.add("active");
+    }
+}
+
 
 
 checkScrolledNav();
@@ -166,10 +183,16 @@ latest.forEach(function(product){
 });
 
 features.forEach(function(product){
+    let isFav = checkProductIntoFavorite(product.id);
     featuredContainer.innerHTML += `
      <div class="col-lg-3">
         <div class="item">
-    <div class="product text-center bg-body rounded-3 px-3 py-1" ondblclick="addToFavorite(${product.id})">
+    <div class="product text-center rounded-3 px-3 py-1 ${(isFav) ? 'favorites': 'bg-body'}"
+    data-product-id="${product.id}"
+    ondblclick="toggleFavorite(${product.id}, this)">
+    <span class="fav-hint">${(isFav) ? 'Double click to remove' : 'Double click to favorite'}</span>
+    <i class="fa-solid fa-heart heart-pop"></i>
+
         <p class="discount ${(product.discount == 0) ? 'd-none' : '' } ">-${product.discount * 100}%</p>
         <div class="head">
             <div class="selectedImg">
