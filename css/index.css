@@ -361,3 +361,13 @@ nav.navbar .icons li i:hover{
     transform: translateX(0);
     opacity: 1;
 }
+footer {
+    background-color: #333;
+    border: none;
+    color: #fff;
+}
+footer #SemiCode {
+    font-weight: bolder;
+    letter-spacing: 1.5px;
+    font-family: Agency FB, sans-serif;
+}
