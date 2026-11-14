@@ -426,13 +426,16 @@ function toggleFavorite(productId, productEle){
 }
 
 function showFavorites(){
-    let contentEle = document.querySelector(`.popup[data-popup-name="favorite"] .row`);
+    let contentEle = document.querySelector(`.popup[data-popup-name="favorite"] .row`),
+    buyButton = document.querySelector(`.popup[data-popup-name="favorite"] .buy`);
 
     if(favoriteProducts.length == 0){
         contentEle.innerHTML = `<p class="alert alert-warning text-center">There are no favorite products</p>`;
+        buyButton.classList.add('d-none');
     } else {
         contentEle.innerHTML = "";
-
+        buyButton.classList.remove('d-none');
+        
         favoriteProducts.forEach(function(favId){
             let product = getProduct(favId);
             contentEle.innerHTML += `
@@ -455,7 +458,7 @@ function showFavorites(){
                                 </div>
                                 <div class="value">
                                     <ul class="list-unstyled d-flex column-gap-2">
-                                        ${prepareSizesList([favId.size])}
+                                        ${product.sizes}
                                     </ul>
                                 </div>
                             </div>
@@ -496,8 +499,10 @@ function removeFromFavorite(productId){
     }
 
     if(favoriteProducts.length == 0){
-        let contentEle = document.querySelector(`.popup[data-popup-name="favorite"] .row`);
+        let contentEle = document.querySelector(`.popup[data-popup-name="favorite"] .row`),
+        buyButton = document.querySelector(`.popup[data-popup-name="favorite"] .buy`);
         contentEle.innerHTML = `<p class="alert alert-warning text-center">There are no favorite products</p>`;
+        buyButton.classList.add('d-none')
     }
 }
 
